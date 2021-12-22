@@ -1,0 +1,49 @@
+{
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.5",
+    "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/netinfo": "6.0.0",
+    "@react-native-community/slider": "3.0.3",
+    "@react-navigation/bottom-tabs": "^5.11.10",
+    "@react-navigation/native": "^5.9.4",
+    "@react-navigation/stack": "^5.14.4",
+    "@types/react-native": "^0.64.2",
+    "@types/react-native-swiper": "^1.5.10",
+    "apisauce": "^2.1.1",
+    "axios": "^0.21.4",
+    "moment": "^2.29.1",
+    "prettier": "^2.2.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "~0.63.4",
+    "react-native-gesture-handler": "~1.10.2",
+    "react-native-reanimated": "~2.1.0",
+    "react-native-responsive-screen": "^1.4.2",
+    "react-native-safe-area-context": "3.2.0",
+    "react-native-screens": "~3.0.0",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
+    "uniqid": "^5.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "babel-jest": "^27.1.0",
+    "react-test-renderer": "^17.0.2",
+    "redux-devtools-extension": "^2.13.9",
+    "remote-redux-devtools": "^0.5.16",
+    "standard": "^16.0.3"
+  },
+  "private": true,
+  "name": "rncontacts",
+  "version": "1.0.0"
+}
