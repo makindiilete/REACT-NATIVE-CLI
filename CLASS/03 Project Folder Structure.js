@@ -7,5 +7,6 @@ screens : - Our app screens
 config : - This contains our env variables
 context : - Global state management - actions, reducers, initialStates
 utils : - host of functions to trim space etc...
-
+navigations
+helpers : - firebase, axios etc
 */
