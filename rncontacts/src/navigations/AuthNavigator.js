@@ -7,7 +7,7 @@ import {Register} from '../screens/Register';
 const AuthNavigator = (props) => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name={routes.LOGIN} component={Login} />
       <Stack.Screen name={routes.SIGN_UP} component={Register} />
     </Stack.Navigator>
