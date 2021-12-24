@@ -12,6 +12,7 @@ export function AppContainer({
       <SafeAreaView style={{flex: 1, backgroundColor: backgroundColor}}>
         <StatusBar
           translucent={true}
+          backgroundColor={backgroundColor}
           barStyle={
             statusTextColor === 'dark' ? 'dark-content' : 'light-content'
           }

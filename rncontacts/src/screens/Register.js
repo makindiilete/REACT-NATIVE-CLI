@@ -9,7 +9,14 @@ import {colors} from '../assets/themes/colors';
 
 export const Register = () => {
   const navigation = useNavigation();
-  const [values, setValues] = useState({
+  const [form, setForm] = useState({
+    username: null,
+    password: null,
+    firstname: null,
+    lastname: null,
+    email: null,
+  });
+  const [errors, setErrors] = useState({
     username: null,
     password: null,
     firstname: null,
@@ -17,11 +24,40 @@ export const Register = () => {
     email: null,
   });
   const handleChangeText = (name, text) => {
-    setValues({...values, [name]: text});
+    //Remove error validation as user starts typing for the current input
+    setErrors({...errors, [name]: null});
+    // Check password length validation
+    if (name === 'password' && text?.length < 6) {
+      setErrors({
+        ...errors,
+        password: 'Please enter a minimum of 6 characters',
+      });
+    }
+    //If user wipe out all the characters, we re-show the error validation
+    if (text?.length === 0) {
+      setErrors({...errors, [name]: `Please add a ${name}`});
+    }
+    setForm({...form, [name]: text});
   };
 
   const submit = () => {
-    console.log(values);
+    let errorObj = {};
+    if (!form.username) {
+      errorObj.username = 'Please add a username';
+    }
+    if (!form.password) {
+      errorObj.password = 'Please add a password';
+    }
+    if (!form.firstname) {
+      errorObj.firstname = 'Please add a firstname';
+    }
+    if (!form.lastname) {
+      errorObj.lastname = 'Please add a lastname';
+    }
+    if (!form.email) {
+      errorObj.email = 'Please add an email address';
+    }
+    setErrors(errorObj);
   };
 
   return (
@@ -38,34 +74,39 @@ export const Register = () => {
             label="Username"
             handleChangeText={(e) => handleChangeText('username', e)}
             placeholder="Username"
-            value={values.username}
+            value={form.username}
+            error={errors.username}
           />
           <AppTextInput
             label="First Name"
-            handleChangeText={(e) => handleChangeText('username', e)}
+            handleChangeText={(e) => handleChangeText('firstname', e)}
             placeholder="firstname"
-            value={values.firstname}
+            value={form.firstname}
+            error={errors.firstname}
           />
           <AppTextInput
             label="Last Name"
-            handleChangeText={(e) => handleChangeText('username', e)}
+            handleChangeText={(e) => handleChangeText('lastname', e)}
             placeholder="lastname"
-            value={values.lastname}
+            value={form.lastname}
+            error={errors.lastname}
           />
           <AppTextInput
             label="Email Address"
-            handleChangeText={(e) => handleChangeText('username', e)}
+            handleChangeText={(e) => handleChangeText('email', e)}
             placeholder="email"
-            value={values.email}
+            value={form.email}
+            error={errors.email}
           />
           <AppTextInput
             label="Password"
             handleChangeText={(e) => handleChangeText('password', e)}
-            value={values.password}
+            value={form.password}
             icon={<Text>Show</Text>}
             secureTextEntry={true}
             iconPosition="Right"
             placeholder="Password"
+            error={errors.password}
           />
           <AppButton title="Submit" primary onPress={submit} />
           <View style={styles.registerSection}>
@@ -105,6 +146,7 @@ const styles = StyleSheet.create({
   registerSection: {
     flexDirection: 'row',
     paddingTop: 10,
+    marginBottom: 50,
   },
   registerText: {fontSize: 17},
   registerButton: {

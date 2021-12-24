@@ -24,7 +24,7 @@ export function AppTextInput({
     iconPosition?.toLowerCase() === 'right' ? 'row-reverse' : 'row';
 
   const getBorderColor = () =>
-    focused ? colors.primary : error ? colors.danger : colors.grey;
+    error ? colors.danger : focused ? colors.primary : colors.grey;
 
   return (
     <View style={styles.inputContainer}>

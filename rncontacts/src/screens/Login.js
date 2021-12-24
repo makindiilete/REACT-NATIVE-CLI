@@ -19,16 +19,42 @@ import {colors} from '../assets/themes/colors';
 
 export const Login = () => {
   const navigation = useNavigation();
-  const [values, setValues] = useState({
+  const [form, setForm] = useState({
+    username: null,
+    password: null,
+  });
+  const [errors, setErrors] = useState({
     username: null,
     password: null,
   });
   const handleChangeText = (name, text) => {
-    setValues({...values, [name]: text});
+    //Remove error validation as user starts typing for the current input
+    setErrors({...errors, [name]: null});
+
+    // Check password length validation
+    if (name === 'password' && text?.length < 6) {
+      setErrors({
+        ...errors,
+        password: 'Please enter a minimum of 6 characters',
+      });
+    }
+    //If user wipe out all the characters, we re-show the error validation
+    if (text?.length === 0) {
+      setErrors({...errors, [name]: `Please add a ${name}`});
+    }
+    setForm({...form, [name]: text});
   };
 
   const submit = () => {
-    console.log(values);
+    let errorObj = {};
+    if (!form.username) {
+      errorObj.username = 'Please add a username';
+    }
+    if (!form.password) {
+      errorObj.password = 'Please add a password';
+    }
+    console.log(form);
+    setErrors(errorObj);
   };
 
   return (
@@ -45,16 +71,18 @@ export const Login = () => {
             label="Username"
             handleChangeText={(e) => handleChangeText('username', e)}
             placeholder="Username"
-            value={values.username}
+            value={form.username}
+            error={errors.username}
           />
           <AppTextInput
             label="Password"
             handleChangeText={(e) => handleChangeText('password', e)}
-            value={values.password}
+            value={form.password}
             icon={<Text>Show</Text>}
             secureTextEntry={true}
             iconPosition="Right"
             placeholder="Password"
+            error={errors.password}
           />
           <AppButton title="Submit" primary onPress={submit} />
           <View style={styles.registerSection}>
