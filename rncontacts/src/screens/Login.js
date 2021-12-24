@@ -6,6 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState} from 'react';
 import {AppContainer} from '../components/AppContainer';
