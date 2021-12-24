@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Text, TextInput, View, StyleSheet} from 'react-native';
+import {
+  Text,
+  TextInput,
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import {colors} from '../assets/themes/colors';
 
 export function AppTextInput({
@@ -29,6 +36,7 @@ export function AppTextInput({
           {flexDirection: getFlexDirection(), borderColor: getBorderColor()},
         ]}>
         <View>{icon && icon}</View>
+
         <TextInput
           onChangeText={handleChangeText}
           value={value}
@@ -63,5 +71,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     paddingVertical: 12,
+  },
+  container: {
+    flex: 1,
   },
 });

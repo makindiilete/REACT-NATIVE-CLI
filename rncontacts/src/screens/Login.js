@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import React, {useState} from 'react';
 import {AppContainer} from '../components/AppContainer';
@@ -16,10 +17,18 @@ import {colors} from '../assets/themes/colors';
 
 export const Login = () => {
   const navigation = useNavigation();
-  const [text, setText] = useState(null);
-  const handleChangeText = (text) => {
-    setText(text);
+  const [values, setValues] = useState({
+    username: null,
+    password: null,
+  });
+  const handleChangeText = (name, text) => {
+    setValues({...values, [name]: text});
   };
+
+  const submit = () => {
+    console.log(values);
+  };
+
   return (
     <AppContainer>
       <Image
@@ -32,20 +41,20 @@ export const Login = () => {
         <View style={styles.form}>
           <AppTextInput
             label="Username"
-            handleChangeText={handleChangeText}
+            handleChangeText={(e) => handleChangeText('username', e)}
             placeholder="Username"
-            value={text}
+            value={values.username}
           />
           <AppTextInput
             label="Password"
-            handleChangeText={handleChangeText}
-            value={text}
+            handleChangeText={(e) => handleChangeText('password', e)}
+            value={values.password}
             icon={<Text>Show</Text>}
             secureTextEntry={true}
             iconPosition="Right"
             placeholder="Password"
           />
-          <AppButton title="Submit" primary />
+          <AppButton title="Submit" primary onPress={submit} />
           <View style={styles.registerSection}>
             <Text style={styles.registerText}>Need a new account?</Text>
             <TouchableOpacity
