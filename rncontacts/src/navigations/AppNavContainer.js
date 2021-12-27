@@ -7,7 +7,6 @@ import {GlobalContext} from '../context/reducers/Provider';
 export function AppNavContainer() {
   const state = useContext(GlobalContext);
   const {isLoggedIn} = state?.authState;
-  console.log('state = ', state);
   return (
     <NavigationContainer>
       {isLoggedIn ? <DrawerNavigator /> : <AuthNavigator />}

@@ -53,7 +53,6 @@ export const Login = () => {
     if (!form.password) {
       errorObj.password = 'Please add a password';
     }
-    console.log(form);
     setErrors(errorObj);
   };
 

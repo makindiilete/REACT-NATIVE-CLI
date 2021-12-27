@@ -1,3 +1,4 @@
+// Register.js
 import {
   Image,
   Text,
@@ -5,17 +6,17 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {AppContainer} from '../components/AppContainer';
-import {AppTextInput} from '../components/AppTextInput';
-import {AppButton} from '../components/AppButton';
-import {useNavigation} from '@react-navigation/native';
-import routes from '../constants/routes';
-import {colors} from '../assets/themes/colors';
-import {envs} from '../config/env';
-import apiClient from '../api/client';
-import {signupService} from '../api/auth';
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { AppContainer } from "../components/AppContainer";
+import { AppTextInput } from "../components/AppTextInput";
+import { AppButton } from "../components/AppButton";
+import { useNavigation } from "@react-navigation/native";
+import routes from "../constants/routes";
+import { colors } from "../assets/themes/colors";
+import { envs } from "../config/env";
+import apiClient from "../api/client";
+import { signupService } from "../api/auth";
 
 export const Register = () => {
   const navigation = useNavigation();
@@ -39,39 +40,39 @@ export const Register = () => {
 
   const handleChangeText = (name, text) => {
     //Remove error validation as user starts typing for the current input
-    setErrors({...errors, [name]: null});
+    setErrors({ ...errors, [name]: null });
     setServerErrors({});
     setDisableBtn(false);
     // Check password length validation
-    if (name === 'password' && text?.length < 8) {
+    if (name === "password" && text?.length < 8) {
       setDisableBtn(true);
       setErrors({
         ...errors,
-        password: 'Please enter a minimum of 6 characters',
+        password: "Please enter a minimum of 6 characters",
       });
     }
 
-    if (name === 'password' && text?.length > 65) {
+    if (name === "password" && text?.length > 65) {
       setDisableBtn(true);
       setErrors({
         ...errors,
-        password: 'Please enter a maximum of 65 characters',
+        password: "Please enter a maximum of 65 characters",
       });
     }
 
-    if (name === 'email') {
+    if (name === "email") {
       if (!validateEmail(text)) {
         setDisableBtn(true);
         setErrors({
           ...errors,
-          email: 'Please enter a valid email address',
+          email: "Please enter a valid email address",
         });
       }
     }
 
     if (text?.length < 2) {
       setDisableBtn(true);
-      setErrors({...errors, [name]: `Please add a minimum of 2 characters`});
+      setErrors({ ...errors, [name]: `Please add a minimum of 2 characters` });
     }
 
     if (text?.length > 150) {
@@ -85,16 +86,16 @@ export const Register = () => {
     //If user wipe out all the characters, we re-show the error validation
     if (text?.length === 0) {
       setDisableBtn(true);
-      setErrors({...errors, [name]: `Please add a ${name}`});
+      setErrors({ ...errors, [name]: `Please add a ${name}` });
     }
-    setForm({...form, [name]: text});
+    setForm({ ...form, [name]: text });
   };
 
   const validateEmail = (email) => {
     return String(email)
       .toLowerCase()
       .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
 
@@ -102,27 +103,27 @@ export const Register = () => {
     let errorObj = {};
     if (!form.username) {
       setDisableBtn(true);
-      errorObj.username = 'Please add a username';
+      errorObj.username = "Please add a username";
     }
     if (!form.password) {
       setDisableBtn(true);
-      errorObj.password = 'Please add a password';
+      errorObj.password = "Please add a password";
     }
     if (!form.first_name) {
       setDisableBtn(true);
-      errorObj.first_name = 'Please add a first_name';
+      errorObj.first_name = "Please add a first_name";
     }
     if (!form.last_name) {
       setDisableBtn(true);
-      errorObj.last_name = 'Please add a last_name';
+      errorObj.last_name = "Please add a last_name";
     }
     if (!form.email) {
       setDisableBtn(true);
-      errorObj.email = 'Please add an email address';
+      errorObj.email = "Please add an email address";
     }
     if (!validateEmail(form.email)) {
       setDisableBtn(true);
-      errorObj.email = 'Please add a valid email address';
+      errorObj.email = "Please add a valid email address";
     }
     setErrors(errorObj);
     //if there are no errors
@@ -131,8 +132,8 @@ export const Register = () => {
       const response = await signupService(form);
       setIsLoading(false);
       if (response.ok) {
-        console.log('Registration successful: ', response.data);
-        Alert.alert('Yay 🍻 ', 'Registration Successful');
+        console.log("Registration successful: ", response.data);
+        Alert.alert("Yay 🍻 ", "Registration Successful");
         navigation.navigate(routes.LOGIN);
       } else {
         let err = {};
@@ -141,7 +142,7 @@ export const Register = () => {
             index
           ][0];
         }
-        console.log('Errors = ', err);
+        console.log("Errors = ", err);
         setServerErrors(err);
       }
     }
@@ -150,7 +151,7 @@ export const Register = () => {
   return (
     <AppContainer>
       <Image
-        source={require('../assets/images/logo.png')}
+        source={require("../assets/images/logo.png")}
         style={styles.logoImage}
       />
       <View>
@@ -161,21 +162,21 @@ export const Register = () => {
             autoCorrect={false}
             autoCapitalize="none"
             label="Username"
-            handleChangeText={(e) => handleChangeText('username', e)}
+            handleChangeText={(e) => handleChangeText("username", e)}
             placeholder="Username"
             value={form.username}
             error={errors.username || serverErrors?.username}
           />
           <AppTextInput
             label="First Name"
-            handleChangeText={(e) => handleChangeText('first_name', e)}
+            handleChangeText={(e) => handleChangeText("first_name", e)}
             placeholder="first name"
             value={form.first_name}
             error={errors.first_name || serverErrors?.first_name}
           />
           <AppTextInput
             label="Last Name"
-            handleChangeText={(e) => handleChangeText('last_name', e)}
+            handleChangeText={(e) => handleChangeText("last_name", e)}
             placeholder="last name"
             value={form.last_name}
             error={errors.last_name || serverErrors?.last_name}
@@ -184,14 +185,14 @@ export const Register = () => {
             autoCorrect={false}
             autoCapitalize="none"
             label="Email Address"
-            handleChangeText={(e) => handleChangeText('email', e)}
+            handleChangeText={(e) => handleChangeText("email", e)}
             placeholder="email"
             value={form.email}
             error={errors.email || serverErrors?.email}
           />
           <AppTextInput
             label="Password"
-            handleChangeText={(e) => handleChangeText('password', e)}
+            handleChangeText={(e) => handleChangeText("password", e)}
             value={form.password}
             icon={<Text>Show</Text>}
             secureTextEntry={true}
@@ -222,33 +223,40 @@ const styles = StyleSheet.create({
   logoImage: {
     height: 150,
     width: 150,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 50,
   },
   title: {
     fontSize: 21,
-    textAlign: 'center',
+    textAlign: "center",
     paddingTop: 20,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   subtitle: {
     fontSize: 17,
-    textAlign: 'center',
+    textAlign: "center",
     paddingVertical: 20,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   form: {
     paddingTop: 20,
   },
   registerSection: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingTop: 10,
     marginBottom: 50,
   },
-  registerText: {fontSize: 17},
+  registerText: { fontSize: 17 },
   registerButton: {
     paddingLeft: 17,
     color: colors.primary,
     fontSize: 16,
   },
 });
+
+//auth.js
+import apiClient from "./client";
+
+export const signupService = (data) => {
+  return apiClient.post("/auth/register", data);
+};
