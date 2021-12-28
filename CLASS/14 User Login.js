@@ -1,3 +1,4 @@
+//Login.js
 import {
   Image,
   Text,
@@ -8,22 +9,22 @@ import {
   StatusBar,
   Platform,
   KeyboardAvoidingView,
-} from 'react-native';
-import React, {useContext, useState} from 'react';
-import {AppContainer} from '../components/AppContainer';
-import {AppTextInput} from '../components/AppTextInput';
-import {AppButton} from '../components/AppButton';
-import {useNavigation} from '@react-navigation/native';
-import routes from '../constants/routes';
-import {colors} from '../assets/themes/colors';
-import AppMsgComponent from '../components/AppMsgComponent';
-import {loginService} from '../api/auth';
-import {storeToStorage} from '../config/storage';
-import {AuthContext} from '../context/context';
+} from "react-native";
+import React, { useContext, useState } from "react";
+import { AppContainer } from "../components/AppContainer";
+import { AppTextInput } from "../components/AppTextInput";
+import { AppButton } from "../components/AppButton";
+import { useNavigation } from "@react-navigation/native";
+import routes from "../constants/routes";
+import { colors } from "../assets/themes/colors";
+import AppMsgComponent from "../components/AppMsgComponent";
+import { loginService } from "../api/auth";
+import { storeToStorage } from "../config/storage";
+import { AuthContext } from "../context/context";
 
 export const Login = () => {
   const navigation = useNavigation();
-  const {user, setUser} = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [serverError, setServerError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
@@ -36,29 +37,29 @@ export const Login = () => {
   });
   const handleChangeText = (name, text) => {
     //Remove error validation as user starts typing for the current input
-    setErrors({...errors, [name]: null});
+    setErrors({ ...errors, [name]: null });
 
     // Check password length validation
-    if (name === 'password' && text?.length < 6) {
+    if (name === "password" && text?.length < 6) {
       setErrors({
         ...errors,
-        password: 'Please enter a minimum of 6 characters',
+        password: "Please enter a minimum of 6 characters",
       });
     }
     //If user wipe out all the characters, we re-show the error validation
     if (text?.length === 0) {
-      setErrors({...errors, [name]: `Please add a ${name}`});
+      setErrors({ ...errors, [name]: `Please add a ${name}` });
     }
-    setForm({...form, [name]: text});
+    setForm({ ...form, [name]: text });
   };
 
   const submit = async () => {
     let errorObj = {};
     if (!form.username) {
-      errorObj.username = 'Please add a username';
+      errorObj.username = "Please add a username";
     }
     if (!form.password) {
-      errorObj.password = 'Please add a password';
+      errorObj.password = "Please add a password";
     }
     setErrors(errorObj);
     setIsLoading(true);
@@ -66,10 +67,10 @@ export const Login = () => {
     setIsLoading(false);
     if (response.ok) {
       setUser(response?.data?.user);
-      await storeToStorage('user', response?.data?.user);
-      await storeToStorage('token', response?.data?.token);
+      await storeToStorage("user", response?.data?.user);
+      await storeToStorage("token", response?.data?.token);
     } else {
-      console.log('Error :', response?.data?.detail);
+      console.log("Error :", response?.data?.detail);
       setServerError(response?.data?.detail);
     }
   };
@@ -77,7 +78,7 @@ export const Login = () => {
   return (
     <AppContainer>
       <Image
-        source={require('../assets/images/logo.png')}
+        source={require("../assets/images/logo.png")}
         style={styles.logoImage}
       />
       <View>
@@ -95,14 +96,14 @@ export const Login = () => {
             autoCorrect={false}
             autoCapitalize="none"
             label="Username"
-            handleChangeText={(e) => handleChangeText('username', e)}
+            handleChangeText={(e) => handleChangeText("username", e)}
             placeholder="Username"
             value={form.username}
             error={errors.username}
           />
           <AppTextInput
             label="Password"
-            handleChangeText={(e) => handleChangeText('password', e)}
+            handleChangeText={(e) => handleChangeText("password", e)}
             value={form.password}
             icon={<Text>Show</Text>}
             secureTextEntry={true}
@@ -120,7 +121,8 @@ export const Login = () => {
           <View style={styles.registerSection}>
             <Text style={styles.registerText}>Need a new account?</Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate(routes.SIGN_UP)}>
+              onPress={() => navigation.navigate(routes.SIGN_UP)}
+            >
               <Text style={styles.registerButton}>Register</Text>
             </TouchableOpacity>
           </View>
@@ -134,29 +136,29 @@ const styles = StyleSheet.create({
   logoImage: {
     height: 150,
     width: 150,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 50,
   },
   title: {
     fontSize: 21,
-    textAlign: 'center',
+    textAlign: "center",
     paddingTop: 20,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   subtitle: {
     fontSize: 17,
-    textAlign: 'center',
+    textAlign: "center",
     paddingVertical: 20,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   form: {
     paddingTop: 20,
   },
   registerSection: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingTop: 10,
   },
-  registerText: {fontSize: 17},
+  registerText: { fontSize: 17 },
   registerButton: {
     paddingLeft: 17,
     color: colors.primary,

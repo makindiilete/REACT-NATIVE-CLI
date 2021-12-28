@@ -16,6 +16,7 @@ import {colors} from '../assets/themes/colors';
 import {envs} from '../config/env';
 import apiClient from '../api/client';
 import {signupService} from '../api/auth';
+import AppMsgComponent from '../components/AppMsgComponent';
 
 export const Register = () => {
   const navigation = useNavigation();
@@ -135,14 +136,17 @@ export const Register = () => {
         Alert.alert('Yay 🍻 ', 'Registration Successful');
         navigation.navigate(routes.LOGIN);
       } else {
-        let err = {};
-        for (const index in Object.keys(response.data)) {
-          err[Object.keys(response.data)[index]] = Object.values(response.data)[
-            index
-          ][0];
+        if (response.data) {
+          let err = {};
+          for (const index in Object.keys(response?.data)) {
+            err[Object.keys(response.data)[index]] = Object.values(
+              response?.data,
+            )[index][0];
+          }
+          setServerErrors(err);
+        } else {
+          setServerErrors('Something went wrong!');
         }
-        console.log('Errors = ', err);
-        setServerErrors(err);
       }
     }
   };
@@ -156,6 +160,9 @@ export const Register = () => {
       <View>
         <Text style={styles.title}>Welcome to RNContacts</Text>
         <Text style={styles.subtitle}>Create a free account</Text>
+        {typeof serverErrors === 'string' && (
+          <AppMsgComponent message={serverErrors} danger />
+        )}
         <View style={styles.form}>
           <AppTextInput
             autoCorrect={false}

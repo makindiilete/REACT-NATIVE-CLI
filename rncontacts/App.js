@@ -1,13 +1,14 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import {AppNavContainer} from './src/navigations/AppNavContainer';
-import {GlobalProvider} from './src/context/reducers/Provider';
+import {AuthContext} from './src/context/context';
 
 const App = () => {
+  const [user, setUser] = useState();
   return (
-    <GlobalProvider>
+    <AuthContext.Provider value={{user, setUser}}>
       <AppNavContainer />
-    </GlobalProvider>
+    </AuthContext.Provider>
   );
 };
 
