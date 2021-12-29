@@ -17,9 +17,12 @@ import {envs} from '../config/env';
 import apiClient from '../api/client';
 import {signupService} from '../api/auth';
 import AppMsgComponent from '../components/AppMsgComponent';
+import Entypo from 'react-native-vector-icons/Entypo';
+import AppIcon from '../components/AppIcon';
 
 export const Register = () => {
   const navigation = useNavigation();
+  const [showPassword, setShowPassword] = useState(false);
   const [serverErrors, setServerErrors] = useState(null);
   const [disableBtn, setDisableBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -133,8 +136,10 @@ export const Register = () => {
       setIsLoading(false);
       if (response.ok) {
         console.log('Registration successful: ', response.data);
-        Alert.alert('Yay 🍻 ', 'Registration Successful');
-        navigation.navigate(routes.LOGIN);
+        navigation.navigate(routes.LOGIN, {
+          registered: true,
+          username: response.data?.username,
+        });
       } else {
         if (response.data) {
           let err = {};
@@ -200,8 +205,16 @@ export const Register = () => {
             label="Password"
             handleChangeText={(e) => handleChangeText('password', e)}
             value={form.password}
-            icon={<Text>Show</Text>}
-            secureTextEntry={true}
+            icon={
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <AppIcon
+                  type="Entypo"
+                  name={!showPassword ? 'eye' : 'eye-with-line'}
+                  size={20}
+                />
+              </TouchableOpacity>
+            }
+            secureTextEntry={!showPassword}
             iconPosition="Right"
             placeholder="Password"
             error={errors.password || serverErrors?.password}

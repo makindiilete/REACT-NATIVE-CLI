@@ -2,6 +2,8 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {AppContainer} from '../components/AppContainer';
 import {useNavigation} from '@react-navigation/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AppIcon from '../components/AppIcon';
 
 export const Contacts = () => {
   //toggleDrawer() toggles d drawer
@@ -10,7 +12,12 @@ export const Contacts = () => {
     setOptions({
       headerLeft: () => (
         <TouchableOpacity onPress={() => toggleDrawer()}>
-          <Text style={{padding: 10}}>NAV</Text>
+          <AppIcon
+            type="MaterialIcons"
+            name="menu"
+            size={30}
+            style={{padding: 10}}
+          />
         </TouchableOpacity>
       ),
     });

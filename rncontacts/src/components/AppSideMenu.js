@@ -1,21 +1,64 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {AppContainer} from './AppContainer';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import routes from '../constants/routes';
 import {colors} from '../assets/themes/colors';
+import {removeFromStorage} from '../config/storage';
+import {AuthContext} from '../context/context';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AppIcon from './AppIcon';
 
 const AppSideMenu = ({navigation}) => {
+  // const {toggleDrawer} = useNavigation();
+  const {user, setUser} = useContext(AuthContext);
   const menuItems = [
     {
-      icon: <Text style={styles.itemIcon}>T</Text>,
+      icon: (
+        <AppIcon
+          type="MaterialIcons"
+          name="settings"
+          size={30}
+          style={{padding: 10, color: colors.white}}
+        />
+      ),
       name: 'Settings',
       onPress: () => navigation.navigate(routes.SETTINGS),
     },
     {
-      icon: <Text style={styles.itemIcon}>L</Text>,
+      icon: (
+        <AppIcon
+          type="MaterialIcons"
+          name="logout"
+          size={30}
+          style={{padding: 10, color: colors.white}}
+        />
+      ),
       name: 'Log Out',
-      onPress: () => {},
+      onPress: () => {
+        navigation.toggleDrawer();
+        Alert.alert('Logout!', 'Are you sure you want to logout?', [
+          {
+            text: 'Cancel',
+            style: 'destructive',
+          },
+          {
+            text: 'Ok',
+            onPress: async () => {
+              setUser(null);
+              await removeFromStorage('user');
+              await removeFromStorage('token');
+            },
+          },
+        ]);
+      },
     },
   ];
 
