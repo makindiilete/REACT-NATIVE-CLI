@@ -18,10 +18,11 @@ import {colors} from '../assets/themes/colors';
 import AppMsgComponent from '../components/AppMsgComponent';
 import {getContactsService} from '../api/contacts';
 import {getToken} from '../config/storage';
+import routes from '../constants/routes';
 
 export const Contacts = () => {
   //toggleDrawer() toggles d drawer
-  const {setOptions, toggleDrawer} = useNavigation();
+  const {setOptions, toggleDrawer, navigate} = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [contacts, setContacts] = useState([]);
@@ -32,6 +33,11 @@ export const Contacts = () => {
     await getToken();
     const response = await getContactsService();
     if (response.ok) {
+      response?.data.sort(function (first, second) {
+        if (first.first_name < second.first_name) return -1;
+        if (first.first_name > second.first_name) return 1;
+        return 0;
+      });
       setContacts(response?.data);
     } else {
       Alert.alert('Oops', response?.data?.detail || 'Something went wrong');
@@ -59,7 +65,6 @@ export const Contacts = () => {
   }, []);
 
   const renderItem = ({item}) => {
-    console.log('Item = ', item);
     const {
       contact_picture,
       country_code,
@@ -71,34 +76,49 @@ export const Contacts = () => {
     } = item;
     return (
       <TouchableOpacity style={styles.itemContainer}>
-        <View>
-          {contact_picture ? (
-            <Image
-              source={{uri: contact_picture}}
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: 25,
-                resizeMode: 'cover',
-              }}
-            />
-          ) : (
-            <View
-              style={{
-                width: 45,
-                height: 45,
-                backgroundColor: colors.grey,
-              }}
-            />
-          )}
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            {contact_picture ? (
+              <Image
+                source={{uri: contact_picture}}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  resizeMode: 'cover',
+                }}
+              />
+            ) : (
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  backgroundColor: colors.grey,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: colors.white,
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                  }}>
+                  {`${first_name[0]} ${last_name[0]}`}
+                </Text>
+              </View>
+            )}
+          </View>
+          <View style={{paddingLeft: 10}}>
+            <Text numberOfLines={1} style={{fontSize: 17}}>
+              {`${first_name} ${last_name}`}{' '}
+            </Text>
+            <Text style={{fontSize: 14, opacity: 0.7}}>
+              {`${country_code} ${phone_number}`}{' '}
+            </Text>
+          </View>
         </View>
-        <View>
-          <Text> {`${first_name} ${last_name}`} </Text>
-        </View>
-        <View>
-          <Text> {phone_number} </Text>
-        </View>
-        <AppIcon type="AntDesign" name="right" />
+        <AppIcon type="AntDesign" name="right" size={18} color={colors.grey} />
       </TouchableOpacity>
     );
   };
@@ -111,13 +131,13 @@ export const Contacts = () => {
         modalBody="Hello from the modal"
         modalFooter={<></>}
       />
-      {/*
-ListFooterComponent : - We use ds to create some space at the bottom of our list
-*/}
       <FlatList
         data={contacts}
         renderItem={renderItem}
         keyExtractor={(item) => String(item.id)}
+        refreshing={isLoading}
+        showsVerticalScrollIndicator={false}
+        onRefresh={() => fetchContacts()}
         ListEmptyComponent={
           !isLoading &&
           contacts?.length === 0 && (
@@ -125,7 +145,19 @@ ListFooterComponent : - We use ds to create some space at the bottom of our list
           )
         }
         ListFooterComponent={<View style={{height: 50}} />}
+        style={{minHeight: '100%'}}
       />
+
+      <TouchableOpacity
+        style={styles.floatingActionBtn}
+        onPress={() => navigate(routes.CREATE_CONTACT)}>
+        <AppIcon
+          name="plus"
+          color={colors.white}
+          size={21}
+          type="FontAwesome5"
+        />
+      </TouchableOpacity>
     </AppContainer>
   );
 };
@@ -136,5 +168,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: 10,
+    borderBottomColor: '#c4c4c4',
+    borderBottomWidth: 0.3,
+    paddingBottom: 10,
+  },
+  floatingActionBtn: {
+    backgroundColor: colors.primary,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    position: 'absolute',
+    bottom: 45,
+    right: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

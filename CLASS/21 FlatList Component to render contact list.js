@@ -60,7 +60,6 @@ export const Contacts = () => {
   }, []);
 
   const renderItem = ({ item }) => {
-    console.log("Item = ", item);
     const {
       contact_picture,
       country_code,

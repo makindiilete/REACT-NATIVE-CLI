@@ -135,7 +135,6 @@ export const Register = () => {
       const response = await signupService(form);
       setIsLoading(false);
       if (response.ok) {
-        console.log('Registration successful: ', response.data);
         navigation.navigate(routes.LOGIN, {
           registered: true,
           username: response.data?.username,

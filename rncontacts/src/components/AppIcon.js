@@ -45,7 +45,7 @@ const getIconFont = (type) => {
     case 'Octicons':
       return Octicons;
     default:
-      return FontAwesome5;
+      return MaterialCommunityIcons;
   }
 };
 

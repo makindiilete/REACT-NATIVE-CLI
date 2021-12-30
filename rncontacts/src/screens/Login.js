@@ -40,7 +40,6 @@ export const Login = ({route}) => {
   });
 
   useEffect(() => {
-    console.log('route = ', route);
     if (route?.params?.username) {
       setForm({...form, username: route?.params?.username});
     }
@@ -86,7 +85,6 @@ export const Login = ({route}) => {
       setUser(response?.data?.user);
       await storeToStorage('user', response?.data?.user);
     } else {
-      console.log('Error :', response?.data?.detail);
       setServerError(response?.data?.detail);
     }
   };

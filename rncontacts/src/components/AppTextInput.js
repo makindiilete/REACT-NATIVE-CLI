@@ -17,6 +17,7 @@ export function AppTextInput({
   icon,
   iconPosition,
   error,
+  placeholder,
   ...rest
 }) {
   const [focused, setFocused] = useState(false);
@@ -35,12 +36,12 @@ export function AppTextInput({
           style,
           {flexDirection: getFlexDirection(), borderColor: getBorderColor()},
         ]}>
-        <View>{icon && icon}</View>
+        <View style={{paddingRight: 10}}>{icon && icon}</View>
 
         <TextInput
           onChangeText={handleChangeText}
           value={value}
-          placeholder="Useless Placeholder"
+          placeholder={placeholder}
           style={styles.textInput}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
