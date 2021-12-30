@@ -1,3 +1,4 @@
+//Contacts.js
 import {
   Alert,
   FlatList,
@@ -6,22 +7,22 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {AppContainer} from '../components/AppContainer';
-import {useNavigation} from '@react-navigation/native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AppIcon from '../components/AppIcon';
-import AppModal from '../components/AppModal';
-import {AppButton} from '../components/AppButton';
-import {colors} from '../assets/themes/colors';
-import AppMsgComponent from '../components/AppMsgComponent';
-import {getContactsService} from '../api/contacts';
-import {getToken} from '../config/storage';
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { AppContainer } from "../components/AppContainer";
+import { useNavigation } from "@react-navigation/native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AppIcon from "../components/AppIcon";
+import AppModal from "../components/AppModal";
+import { AppButton } from "../components/AppButton";
+import { colors } from "../assets/themes/colors";
+import AppMsgComponent from "../components/AppMsgComponent";
+import { getContactsService } from "../api/contacts";
+import { getToken } from "../config/storage";
 
 export const Contacts = () => {
   //toggleDrawer() toggles d drawer
-  const {setOptions, toggleDrawer} = useNavigation();
+  const { setOptions, toggleDrawer } = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [contacts, setContacts] = useState([]);
@@ -34,7 +35,7 @@ export const Contacts = () => {
     if (response.ok) {
       setContacts(response?.data);
     } else {
-      Alert.alert('Oops', response?.data?.detail || 'Something went wrong');
+      Alert.alert("Oops", response?.data?.detail || "Something went wrong");
     }
     setIsLoading(false);
   };
@@ -51,15 +52,15 @@ export const Contacts = () => {
             type="MaterialIcons"
             name="menu"
             size={30}
-            style={{padding: 10}}
+            style={{ padding: 10 }}
           />
         </TouchableOpacity>
       ),
     });
   }, []);
 
-  const renderItem = ({item}) => {
-    console.log('Item = ', item);
+  const renderItem = ({ item }) => {
+    console.log("Item = ", item);
     const {
       contact_picture,
       country_code,
@@ -74,12 +75,12 @@ export const Contacts = () => {
         <View>
           {contact_picture ? (
             <Image
-              source={{uri: contact_picture}}
+              source={{ uri: contact_picture }}
               style={{
                 width: 50,
                 height: 50,
                 borderRadius: 25,
-                resizeMode: 'cover',
+                resizeMode: "cover",
               }}
             />
           ) : (
@@ -124,7 +125,7 @@ ListFooterComponent : - We use ds to create some space at the bottom of our list
             <AppMsgComponent secondary message="No contacts to show" />
           )
         }
-        ListFooterComponent={<View style={{height: 50}} />}
+        ListFooterComponent={<View style={{ height: 50 }} />}
       />
     </AppContainer>
   );
@@ -132,9 +133,9 @@ ListFooterComponent : - We use ds to create some space at the bottom of our list
 
 const styles = StyleSheet.create({
   itemContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 10,
   },
 });

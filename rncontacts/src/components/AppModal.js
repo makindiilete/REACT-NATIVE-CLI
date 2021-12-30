@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: 'grey',
+    borderBottomColor: '#c4c4c4',
     paddingBottom: 10,
   },
   body: {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     borderTopWidth: 1,
-    borderTopColor: 'grey',
+    borderTopColor: '#c4c4c4',
     paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',

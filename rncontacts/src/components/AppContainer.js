@@ -17,9 +17,9 @@ export function AppContainer({
             statusTextColor === 'dark' ? 'dark-content' : 'light-content'
           }
         />
-        <ScrollView keyboardShouldPersistTaps="always">
-          <View style={[{padding: 20}, style]}>{children}</View>
-        </ScrollView>
+        {/*<ScrollView keyboardShouldPersistTaps="always">*/}
+        <View style={[{padding: 20}, style]}>{children}</View>
+        {/*</ScrollView>*/}
       </SafeAreaView>
     </>
   );

@@ -82,9 +82,9 @@ export const Login = ({route}) => {
     const response = await loginService(form);
     setIsLoading(false);
     if (response.ok) {
+      await storeToStorage('token', response?.data?.token);
       setUser(response?.data?.user);
       await storeToStorage('user', response?.data?.user);
-      await storeToStorage('token', response?.data?.token);
     } else {
       console.log('Error :', response?.data?.detail);
       setServerError(response?.data?.detail);
