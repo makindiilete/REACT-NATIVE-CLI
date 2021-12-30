@@ -187,9 +187,9 @@ export const Register = () => {
           <AppTextInput
             label="Last Name"
             handleChangeText={(e) => handleChangeText('last_name', e)}
+            error={errors.last_name || serverErrors?.last_name}
             placeholder="last name"
             value={form.last_name}
-            error={errors.last_name || serverErrors?.last_name}
           />
           <AppTextInput
             autoCorrect={false}

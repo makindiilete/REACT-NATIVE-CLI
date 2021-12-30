@@ -7,9 +7,9 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {AppContainer} from '../components/AppContainer';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AppIcon from '../components/AppIcon';
 import AppModal from '../components/AppModal';
@@ -45,9 +45,16 @@ export const Contacts = () => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    fetchContacts();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused
+      fetchContacts();
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, []),
+  );
 
   useEffect(() => {
     setOptions({
