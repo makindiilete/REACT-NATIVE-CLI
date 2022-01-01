@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.rncontacts"
+        applicationId "com.makindiilete.rncontacts"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
