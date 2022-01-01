@@ -17,12 +17,13 @@ import {AppButton} from '../components/AppButton';
 import {colors} from '../assets/themes/colors';
 import AppMsgComponent from '../components/AppMsgComponent';
 import {getContactsService} from '../api/contacts';
-import {getToken} from '../config/storage';
+import {getFromStorage, getToken} from '../config/storage';
 import routes from '../constants/routes';
 
 export const Contacts = () => {
   //toggleDrawer() toggles d drawer
   const {setOptions, toggleDrawer, navigate} = useNavigation();
+  const [defaultSort, setDefaultSort] = useState('lastname');
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [contacts, setContacts] = useState([]);
@@ -31,18 +32,32 @@ export const Contacts = () => {
   const fetchContacts = async () => {
     setIsLoading(true);
     await getToken();
+    const sort = await getFromStorage('defaultSort');
     const response = await getContactsService();
     if (response.ok) {
-      response?.data.sort(function (first, second) {
-        if (first.first_name < second.first_name) return -1;
-        if (first.first_name > second.first_name) return 1;
-        return 0;
-      });
+      if (sort === 'lastname') {
+        response?.data.sort(function (first, second) {
+          if (first.first_name < second.first_name) return -1;
+          if (first.first_name > second.first_name) return 1;
+          return 0;
+        });
+      } else {
+        response?.data.sort(function (first, second) {
+          if (first.last_name < second.last_name) return -1;
+          if (first.last_name > second.last_name) return 1;
+          return 0;
+        });
+      }
       setContacts(response?.data);
     } else {
       Alert.alert('Oops', response?.data?.detail || 'Something went wrong');
     }
     setIsLoading(false);
+  };
+
+  const getSettings = async () => {
+    const sort = await getFromStorage('defaultSort');
+    setDefaultSort(sort);
   };
 
   useFocusEffect(
