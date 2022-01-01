@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {
   Modal,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,20 +18,29 @@ const AppModal = ({
   modalBody,
   modalFooter,
   setModalVisible,
+  closeOnTouchOutside = true,
 }) => {
   return (
     <>
       <Modal onDismiss={setModalVisible} visible={modalVisible} transparent>
-        <TouchableOpacity onPress={setModalVisible} style={styles.container}>
+        <Pressable
+          onPress={() => {
+            if (closeOnTouchOutside) {
+              setModalVisible();
+            }
+          }}
+          style={styles.container}>
           <View style={styles.modalArea}>
             <ScrollView>
               <View style={styles.header}>
-                <AppIcon
-                  type="AntDesign"
-                  name="close"
-                  size={15}
-                  style={{marginRight: 20}}
-                />
+                <Pressable onPress={setModalVisible}>
+                  <AppIcon
+                    type="AntDesign"
+                    name="close"
+                    size={15}
+                    style={{marginRight: 20}}
+                  />
+                </Pressable>
                 <Text style={styles.header__content}>{modalTitle}</Text>
               </View>
               <View style={styles.body}>
@@ -47,7 +57,7 @@ const AppModal = ({
               )}
             </ScrollView>
           </View>
-        </TouchableOpacity>
+        </Pressable>
       </Modal>
     </>
   );
