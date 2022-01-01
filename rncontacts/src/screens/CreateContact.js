@@ -1,5 +1,12 @@
-import {Text, View, StyleSheet, Image, Switch} from 'react-native';
-import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  Switch,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
 import CountryPicker from 'react-native-country-picker-modal';
 import {AppContainer} from '../components/AppContainer';
 import {AppTextInput} from '../components/AppTextInput';
@@ -10,9 +17,12 @@ import {createContactService, signupService} from '../api/auth';
 import routes from '../constants/routes';
 import {useNavigation} from '@react-navigation/native';
 import AppMsgComponent from '../components/AppMsgComponent';
+import {AppImagePicker} from '../components/AppImagePicker';
 
 export const CreateContact = () => {
+  const sheetRef = useRef();
   const navigation = useNavigation();
+  const [imageUri, setImageUri] = useState(null);
   const [disableBtn, setDisableBtn] = useState(false);
   const [countryCode, setCountryCode] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +40,16 @@ export const CreateContact = () => {
     last_name: null,
     phone_number: null,
   });
+
+  const onFileSelected = (image) => {
+    console.log('Selected = ', image);
+    //sourceURL & path available on ios
+    // path only available on android
+    const {sourceURL, path} = image;
+    console.log('Selected image : ', sourceURL);
+    setImageUri(path);
+    sheetRef.current?.close();
+  };
 
   const handleChangeText = (name, text) => {
     //Remove error validation as user starts typing for the current input
@@ -132,8 +152,14 @@ export const CreateContact = () => {
   return (
     <AppContainer>
       <View>
-        <Image source={{uri: DEFAULT_IMAGE_URI}} style={styles.imageView} />
-        <Text style={styles.imageText}>Choose Image</Text>
+        <Image
+          source={{uri: imageUri || DEFAULT_IMAGE_URI}}
+          style={styles.imageView}
+        />
+        {/*Onpress of d choose image text, we open the picker*/}
+        <TouchableOpacity onPress={() => sheetRef.current?.open()}>
+          <Text style={styles.imageText}>Choose Image</Text>
+        </TouchableOpacity>
         {typeof serverErrors === 'string' && (
           <AppMsgComponent message={serverErrors} danger />
         )}
@@ -183,6 +209,8 @@ export const CreateContact = () => {
           onPress={submit}
         />
       </View>
+      {/*We forward our ref as props to d ImagePicker component*/}
+      <AppImagePicker ref={sheetRef} onFileSelected={onFileSelected} />
     </AppContainer>
   );
 };
