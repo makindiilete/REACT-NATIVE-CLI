@@ -18,6 +18,7 @@ import routes from '../constants/routes';
 import {useNavigation} from '@react-navigation/native';
 import AppMsgComponent from '../components/AppMsgComponent';
 import {AppImagePicker} from '../components/AppImagePicker';
+import {uploadToServer} from '../api/uploadImage';
 
 export const CreateContact = () => {
   const sheetRef = useRef();
@@ -26,6 +27,7 @@ export const CreateContact = () => {
   const [disableBtn, setDisableBtn] = useState(false);
   const [countryCode, setCountryCode] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
   const [form, setForm] = useState({
     first_name: null,
     last_name: null,
@@ -78,7 +80,6 @@ export const CreateContact = () => {
   };
 
   const onSelect = (country) => {
-    console.log('Country = ', country);
     setCountryCode(country.cca2);
     setForm({...form, country_code: country?.callingCode[0]});
   };
@@ -101,21 +102,26 @@ export const CreateContact = () => {
     //if there are no errors
     if (Object.values(errorObj).length === 0) {
       setIsLoading(true);
-      const response = await createContactService(form);
-      setIsLoading(false);
-      if (response.ok) {
-        navigation.navigate(routes.CONTACT);
-      } else {
-        if (response?.data) {
-          let err = {};
-          for (const index in Object.keys(response?.data)) {
-            err[Object.keys(response.data)[index]] = Object.values(
-              response?.data,
-            )[index][0];
-          }
-          setServerErrors(err);
+      const imgToUse = await uploadToServer(imageUri);
+      if (imgToUse) {
+        form.contact_picture = imgToUse;
+        console.log('Submitting ds form = ', form);
+        const response = await createContactService(form);
+        setIsLoading(false);
+        if (response.ok) {
+          navigation.navigate(routes.CONTACT);
         } else {
-          setServerErrors(response?.details || 'Something went wrong!');
+          if (response?.data) {
+            let err = {};
+            for (const index in Object.keys(response?.data)) {
+              err[Object.keys(response.data)[index]] = Object.values(
+                response?.data,
+              )[index][0];
+            }
+            setServerErrors(err);
+          } else {
+            setServerErrors(response?.details || 'Something went wrong!');
+          }
         }
       }
     }

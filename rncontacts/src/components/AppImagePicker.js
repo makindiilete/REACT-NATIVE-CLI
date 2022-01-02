@@ -14,6 +14,7 @@ export const AppImagePicker = React.forwardRef(({onFileSelected}, ref) => {
       onPress: () => {
         ImagePicker.openCamera({
           width: 300,
+          height: 300,
           cropping: true,
           freeStyleCropEnabled: true,
         })
