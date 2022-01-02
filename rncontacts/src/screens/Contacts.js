@@ -7,7 +7,7 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {AppContainer} from '../components/AppContainer';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -17,12 +17,14 @@ import {AppButton} from '../components/AppButton';
 import {colors} from '../assets/themes/colors';
 import AppMsgComponent from '../components/AppMsgComponent';
 import {getContactsService} from '../api/contacts';
-import {getFromStorage, getToken} from '../config/storage';
+import {getFromStorage, getToken, removeFromStorage} from '../config/storage';
 import routes from '../constants/routes';
+import {AuthContext} from '../context/context';
 
 export const Contacts = () => {
   //toggleDrawer() toggles d drawer
   const {setOptions, toggleDrawer, navigate} = useNavigation();
+
   const [defaultSort, setDefaultSort] = useState('lastname');
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +52,9 @@ export const Contacts = () => {
       }
       setContacts(response?.data);
     } else {
-      Alert.alert('Oops', response?.data?.detail || 'Something went wrong');
+      if (response.status !== 403) {
+        Alert.alert('Oops', response?.data?.detail || 'Something went wrong');
+      }
     }
     setIsLoading(false);
   };

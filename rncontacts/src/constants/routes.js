@@ -5,5 +5,6 @@ export default Object.freeze({
   CREATE_CONTACT: 'Create Contact',
   SETTINGS: 'Settings',
   LOGIN: 'Login',
+  LOGOUT: 'Logout',
   SIGN_UP: 'Register',
 });

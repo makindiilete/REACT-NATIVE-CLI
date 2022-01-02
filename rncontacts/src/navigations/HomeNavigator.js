@@ -5,7 +5,7 @@ import {Contacts} from '../screens/Contacts';
 import {ContactDetail} from '../screens/ContactDetail';
 import {CreateContact} from '../screens/CreateContact';
 import {Settings} from '../screens/Settings';
-import {Text} from 'react-native';
+import {Logout} from '../screens/Logout';
 
 const HomeNavigator = (props) => {
   const Stack = createStackNavigator();
@@ -16,6 +16,7 @@ const HomeNavigator = (props) => {
       <Stack.Screen name={routes.CONTACT_DETAIL} component={ContactDetail} />
       <Stack.Screen name={routes.CREATE_CONTACT} component={CreateContact} />
       <Stack.Screen name={routes.SETTINGS} component={Settings} />
+      <Stack.Screen name={routes.LOGOUT} component={Logout} />
     </Stack.Navigator>
   );
 };
