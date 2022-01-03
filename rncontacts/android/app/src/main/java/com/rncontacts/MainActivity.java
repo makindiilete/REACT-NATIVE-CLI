@@ -1,8 +1,21 @@
 package com.makindiilete.rncontacts;
 
-import com.facebook.react.ReactActivity;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 
+import androidx.annotation.Nullable;
+
+import com.cboy.rn.splashscreen.SplashScreen;
+import com.facebook.react.ReactActivity;
+import com.cboy.rn.splashscreen.SplashScreenReactPackage;
 public class MainActivity extends ReactActivity {
+
+  // Add this method.
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    SplashScreen.show(this,R.style.SplashTheme);
+    super.onCreate(savedInstanceState);
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

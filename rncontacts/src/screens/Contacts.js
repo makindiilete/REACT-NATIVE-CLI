@@ -101,7 +101,9 @@ export const Contacts = () => {
       phone_number,
     } = item;
     return (
-      <TouchableOpacity style={styles.itemContainer}>
+      <TouchableOpacity
+        style={styles.itemContainer}
+        onPress={() => navigate(routes.CONTACT_DETAIL, item)}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View>
             {contact_picture ? (
@@ -176,7 +178,7 @@ export const Contacts = () => {
 
       <TouchableOpacity
         style={styles.floatingActionBtn}
-        onPress={() => navigate(routes.CREATE_CONTACT)}>
+        onPress={() => navigate(routes.CREATE_CONTACT, {})}>
         <AppIcon
           name="plus"
           color={colors.white}

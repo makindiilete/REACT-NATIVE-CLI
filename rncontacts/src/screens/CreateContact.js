@@ -6,21 +6,36 @@ import {
   Switch,
   TouchableOpacity,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import CountryPicker from 'react-native-country-picker-modal';
 import {AppContainer} from '../components/AppContainer';
 import {AppTextInput} from '../components/AppTextInput';
 import {AppButton} from '../components/AppButton';
 import {DEFAULT_IMAGE_URI} from '../constants/general';
 import {colors} from '../assets/themes/colors';
-import {createContactService, signupService} from '../api/auth';
+import {
+  createContactService,
+  signupService,
+  updateContactService,
+} from '../api/auth';
 import routes from '../constants/routes';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AppMsgComponent from '../components/AppMsgComponent';
 import {AppImagePicker} from '../components/AppImagePicker';
 import {uploadToServer} from '../api/uploadImage';
+import {countryCodes} from '../constants/countryCodes';
 
-export const CreateContact = () => {
+export const CreateContact = ({route}) => {
+  console.log('Contact details = ', route.params);
+  const {
+    contact_picture,
+    country_code,
+    first_name,
+    id,
+    is_favorite,
+    last_name,
+    phone_number,
+  } = route.params;
   const sheetRef = useRef();
   const navigation = useNavigation();
   const [imageUri, setImageUri] = useState(null);
@@ -29,12 +44,12 @@ export const CreateContact = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
   const [form, setForm] = useState({
-    first_name: null,
-    last_name: null,
-    phone_number: null,
-    country_code: null,
-    is_favorite: false,
-    contact_picture: null,
+    first_name: first_name || null,
+    last_name: last_name || null,
+    phone_number: phone_number || null,
+    country_code: country_code || null,
+    is_favorite: is_favorite || false,
+    contact_picture: contact_picture || null,
   });
   const [serverErrors, setServerErrors] = useState(null);
   const [errors, setErrors] = useState({
@@ -43,6 +58,18 @@ export const CreateContact = () => {
     phone_number: null,
   });
 
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused
+      const code = countryCodes.find((v) => v.value === `+${country_code}`);
+      setCountryCode(code?.key?.toUpperCase());
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, []),
+  );
+
   const onFileSelected = (image) => {
     console.log('Selected = ', image);
     //sourceURL & path available on ios
@@ -50,6 +77,7 @@ export const CreateContact = () => {
     const {sourceURL, path} = image;
     console.log('Selected image : ', sourceURL);
     setImageUri(path);
+    setForm({...form, contact_picture: path});
     sheetRef.current?.close();
   };
 
@@ -102,26 +130,52 @@ export const CreateContact = () => {
     //if there are no errors
     if (Object.values(errorObj).length === 0) {
       setIsLoading(true);
-      const imgToUse = await uploadToServer(imageUri);
-      if (imgToUse) {
-        form.contact_picture = imgToUse;
-        console.log('Submitting ds form = ', form);
-        const response = await createContactService(form);
-        setIsLoading(false);
-        if (response.ok) {
-          navigation.navigate(routes.CONTACT);
+      let imgToUse;
+      if (imageUri) {
+        imgToUse = await uploadToServer(imageUri);
+      }
+      console.log('Submitting ds form = ', form);
+      let response;
+      if (id) {
+        if (!imageUri) {
+          response = await updateContactService(id, {
+            id: id,
+            first_name: form.first_name,
+            last_name: form.last_name,
+            phone_number: form.phone_number,
+            country_code: form.country_code,
+            is_favorite: form.is_favorite,
+          });
         } else {
-          if (response?.data) {
-            let err = {};
-            for (const index in Object.keys(response?.data)) {
-              err[Object.keys(response.data)[index]] = Object.values(
-                response?.data,
-              )[index][0];
-            }
-            setServerErrors(err);
-          } else {
-            setServerErrors(response?.details || 'Something went wrong!');
+          response = await updateContactService(id, {
+            ...form,
+            id: id,
+            contact_picture: imgToUse,
+          });
+        }
+      } else {
+        console.log('Creating contact');
+        response = await createContactService({
+          ...form,
+          contact_picture: imgToUse,
+        });
+      }
+
+      setIsLoading(false);
+      if (response.ok) {
+        navigation.navigate(routes.CONTACT);
+        navigation.navigate(routes.CONTACT_DETAIL, response?.data);
+      } else {
+        if (response?.data) {
+          let err = {};
+          for (const index in Object.keys(response?.data)) {
+            err[Object.keys(response.data)[index]] = Object.values(
+              response?.data,
+            )[index][0];
           }
+          setServerErrors(err);
+        } else {
+          setServerErrors(response?.details || 'Something went wrong!');
         }
       }
     }
@@ -159,7 +213,7 @@ export const CreateContact = () => {
     <AppContainer>
       <View>
         <Image
-          source={{uri: imageUri || DEFAULT_IMAGE_URI}}
+          source={{uri: form.contact_picture || DEFAULT_IMAGE_URI}}
           style={styles.imageView}
         />
         {/*Onpress of d choose image text, we open the picker*/}
@@ -184,6 +238,7 @@ export const CreateContact = () => {
           error={errors.last_name || serverErrors?.last_name}
         />
         <AppTextInput
+          keyboardType="phone-pad"
           label="Phone Number"
           value={form.phone_number}
           placeholder="Enter phone number"

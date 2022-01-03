@@ -16,6 +16,7 @@ export function AppButton({
   disabled,
   loading,
   onPress,
+  style,
   ...rest
 }) {
   const getBgColor = () => {
@@ -33,7 +34,7 @@ export function AppButton({
     <TouchableOpacity
       disabled={loading || disabled}
       onPress={onPress}
-      style={[styles.inputContainer, {backgroundColor: getBgColor()}]}>
+      style={[styles.inputContainer, {backgroundColor: getBgColor()}, style]}>
       <View>
         {loading ? (
           <ActivityIndicator color={colors.secondary} />

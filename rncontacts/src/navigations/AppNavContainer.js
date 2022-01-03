@@ -7,13 +7,13 @@ import {getFromStorage} from '../config/storage';
 import {ActivityIndicator, View} from 'react-native';
 import {colors} from '../assets/themes/colors';
 import {navigationRef} from './RootNavigator';
+import SplashScreen from 'react-native-splash-screen';
 
 export function AppNavContainer() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
   const {user, setUser} = useContext(AuthContext);
 
   const getUser = async () => {
-    setIsLoading(true);
     const user = await getFromStorage('user');
     console.log('User is here = ', user);
     if (user) {
@@ -21,25 +21,30 @@ export function AppNavContainer() {
     } else {
       setUser(null);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
-    getUser();
+    async function prepare() {
+      try {
+        await getUser();
+      } catch (error) {
+        console.warn(error);
+      } finally {
+        setAppIsReady(true);
+        SplashScreen.hide();
+      }
+    }
+    prepare();
   }, []);
+
+  /* if (!appIsReady) {
+    return null;
+  }*/
 
   return (
     /*ds ref we create here allows us to be able to use our RootNavigator.js to navigate from components that doesnt have the useNavigation hook*/
     <NavigationContainer ref={navigationRef}>
-      {isLoading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
-      ) : user ? (
-        <DrawerNavigator />
-      ) : (
-        <AuthNavigator />
-      )}
+      {user ? <DrawerNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }

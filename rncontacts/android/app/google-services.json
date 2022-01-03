@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "616017450139",
+    "project_id": "rn-contacts-a674d",
+    "storage_bucket": "rn-contacts-a674d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616017450139:android:b2ef18b2040d64ee91623e",
+        "android_client_info": {
+          "package_name": "com.makindiilete.rncontacts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616017450139-rdqqt61d8hoap72nttdhcah79rk56l6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9nIDuyOsFJTmPWzbU2N5ivrRaFPB3OBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616017450139-rdqqt61d8hoap72nttdhcah79rk56l6a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "616017450139-jr81b0qtfig81ol1095hr51uslfb09kk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.makindiilete.rncontacts"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

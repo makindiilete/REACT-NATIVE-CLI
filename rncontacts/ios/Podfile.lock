@@ -226,8 +226,8 @@ PODS:
     - React-Core
   - react-native-slider (3.0.3):
     - React
-  - react-native-splash-screen (3.3.0):
-    - React-Core
+  - react-native-splash-screen (3.0.0):
+    - React
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
   - React-RCTAnimation (0.63.4):
@@ -516,7 +516,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 34f4d7a42f49157f3b45c14217d256bce7dc9682
   react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
   react-native-slider: b733e17fdd31186707146debf1f04b5d94aa1a93
-  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
+  react-native-splash-screen: dbc44e1cb49ace0c7433f605bf75c7d34d9e50c5
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
@@ -539,6 +539,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: 1ac71e9a82e3f41eea3eedfff8eacb0d3821c9ec
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: ee20c1ef20bd40b563e77e3702526232f5d913a8
+PODFILE CHECKSUM: 013a88629ba0b7652d0f31098e72976590fdb3b1
 
 COCOAPODS: 1.10.1

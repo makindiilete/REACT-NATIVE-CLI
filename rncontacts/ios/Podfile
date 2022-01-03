@@ -11,6 +11,8 @@ target 'rncontacts' do
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'QBImagePickerController', :path => '../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'rncontactsTests' do
     inherit! :complete
     # Pods for testing
