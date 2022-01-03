@@ -18,7 +18,7 @@ import routes from '../constants/routes';
 import {colors} from '../assets/themes/colors';
 import AppMsgComponent from '../components/AppMsgComponent';
 import {loginService} from '../api/auth';
-import {storeToStorage} from '../config/storage';
+import {getFromStorage, storeToStorage} from '../config/storage';
 import {AuthContext} from '../context/context';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AppIcon from '../components/AppIcon';
@@ -38,6 +38,15 @@ export const Login = ({route}) => {
     username: null,
     password: null,
   });
+
+  useEffect(() => {
+    async function storeLogin() {
+      const username = await getFromStorage('username');
+      const password = await getFromStorage('password');
+      setForm({username: username, password: password});
+    }
+    storeLogin();
+  }, []);
 
   useEffect(() => {
     if (route?.params?.username) {
@@ -79,6 +88,8 @@ export const Login = ({route}) => {
     setErrors(errorObj);
     setIsLoading(true);
     const response = await loginService(form);
+    await storeToStorage('username', form.username);
+    await storeToStorage('password', form.password);
     setIsLoading(false);
     if (response.ok) {
       await storeToStorage('token', response?.data?.token);

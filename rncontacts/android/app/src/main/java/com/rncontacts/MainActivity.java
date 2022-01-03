@@ -1,19 +1,14 @@
 package com.makindiilete.rncontacts;
 
-import android.os.Bundle;
-import android.os.PersistableBundle;
-
-import androidx.annotation.Nullable;
-
-import com.cboy.rn.splashscreen.SplashScreen;
 import com.facebook.react.ReactActivity;
-import com.cboy.rn.splashscreen.SplashScreenReactPackage;
+import com.cboy.rn.splashscreen.SplashScreen;
+import android.os.Bundle; // Import this.
 public class MainActivity extends ReactActivity {
 
   // Add this method.
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.show(this,R.style.SplashTheme);
+    SplashScreen.show(this);
     super.onCreate(savedInstanceState);
   }
 
