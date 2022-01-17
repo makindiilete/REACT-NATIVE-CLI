@@ -8,6 +8,7 @@ import {
   StatusBar,
   Platform,
   KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {AppContainer} from '../components/AppContainer';
@@ -96,77 +97,80 @@ export const Login = ({route}) => {
       setUser(response?.data?.user);
       await storeToStorage('user', response?.data?.user);
     } else {
-      setServerError(response?.data?.detail);
+      setServerError(response?.data?.detail || 'Something went wrong');
     }
   };
 
   return (
     <AppContainer>
-      <Image
-        source={require('../assets/images/logo.png')}
-        style={styles.logoImage}
-      />
-      <View>
-        <Text style={styles.title}>Welcome to RNContacts</Text>
-        <Text style={styles.subtitle}>Please login here</Text>
-        {serverError && (
-          <AppMsgComponent
-            danger
-            message={serverError}
-            onDismiss={() => setServerError(null)}
-          />
-        )}
-        {showRegSuccess && (
-          <AppMsgComponent
-            success
-            message="Registration successful"
-            onDismiss={() => setShowRegSuccess(false)}
-          />
-        )}
-        <View style={styles.form}>
-          <AppTextInput
-            autoCorrect={false}
-            autoCapitalize="none"
-            label="Username"
-            handleChangeText={(e) => handleChangeText('username', e)}
-            placeholder="Username"
-            value={form.username}
-            error={errors.username}
-          />
-          <AppTextInput
-            label="Password"
-            handleChangeText={(e) => handleChangeText('password', e)}
-            value={form.password}
-            icon={
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <AppIcon
-                  type="Entypo"
-                  name={!showPassword ? 'eye' : 'eye-with-line'}
-                  size={20}
-                />
+      <ScrollView keyboardShouldPersistTaps="always">
+        <Image
+          source={require('../assets/images/logo.png')}
+          style={styles.logoImage}
+        />
+        <View>
+          <Text style={styles.title}>Welcome to RNContacts</Text>
+          <Text style={styles.subtitle}>Please login here</Text>
+          {serverError && (
+            <AppMsgComponent
+              danger
+              message={serverError}
+              onDismiss={() => setServerError(null)}
+            />
+          )}
+          {showRegSuccess && (
+            <AppMsgComponent
+              success
+              message="Registration successful"
+              onDismiss={() => setShowRegSuccess(false)}
+            />
+          )}
+          <View style={styles.form}>
+            <AppTextInput
+              autoCorrect={false}
+              autoCapitalize="none"
+              label="Username"
+              handleChangeText={(e) => handleChangeText('username', e)}
+              placeholder="Username"
+              value={form.username}
+              error={errors.username}
+            />
+            <AppTextInput
+              label="Password"
+              handleChangeText={(e) => handleChangeText('password', e)}
+              value={form.password}
+              icon={
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}>
+                  <AppIcon
+                    type="Entypo"
+                    name={!showPassword ? 'eye' : 'eye-with-line'}
+                    size={20}
+                  />
+                </TouchableOpacity>
+              }
+              secureTextEntry={!showPassword}
+              iconPosition="Right"
+              placeholder="Password"
+              error={errors.password}
+            />
+            <AppButton
+              title="Submit"
+              primary
+              onPress={submit}
+              loading={isLoading}
+              disabled={isLoading}
+            />
+            <View style={styles.registerSection}>
+              <Text style={styles.registerText}>Need a new account?</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(routes.SIGN_UP)}>
+                <Text style={styles.registerButton}>Register</Text>
               </TouchableOpacity>
-            }
-            secureTextEntry={!showPassword}
-            iconPosition="Right"
-            placeholder="Password"
-            error={errors.password}
-          />
-          <AppButton
-            title="Submit"
-            primary
-            onPress={submit}
-            loading={isLoading}
-            disabled={isLoading}
-          />
-          <View style={styles.registerSection}>
-            <Text style={styles.registerText}>Need a new account?</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate(routes.SIGN_UP)}>
-              <Text style={styles.registerButton}>Register</Text>
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </AppContainer>
   );
 };

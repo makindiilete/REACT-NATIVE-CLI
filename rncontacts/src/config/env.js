@@ -3,7 +3,7 @@ const settings = {
     apiUrl: 'https://truly-contacts.herokuapp.com/api',
   },
   prod: {
-    apiUrl: 'https://prod.truly-contacts.herokuapp.com/api',
+    apiUrl: 'https://truly-contacts.herokuapp.com/api',
   },
 };
 

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {AppContainer} from '../components/AppContainer';
@@ -157,82 +158,86 @@ export const Register = () => {
 
   return (
     <AppContainer>
-      <Image
-        source={require('../assets/images/logo.png')}
-        style={styles.logoImage}
-      />
-      <View>
-        <Text style={styles.title}>Welcome to RNContacts</Text>
-        <Text style={styles.subtitle}>Create a free account</Text>
-        {typeof serverErrors === 'string' && (
-          <AppMsgComponent message={serverErrors} danger />
-        )}
-        <View style={styles.form}>
-          <AppTextInput
-            autoCorrect={false}
-            autoCapitalize="none"
-            label="Username"
-            handleChangeText={(e) => handleChangeText('username', e)}
-            placeholder="Username"
-            value={form.username}
-            error={errors.username || serverErrors?.username}
-          />
-          <AppTextInput
-            label="First Name"
-            handleChangeText={(e) => handleChangeText('first_name', e)}
-            placeholder="first name"
-            value={form.first_name}
-            error={errors.first_name || serverErrors?.first_name}
-          />
-          <AppTextInput
-            label="Last Name"
-            handleChangeText={(e) => handleChangeText('last_name', e)}
-            error={errors.last_name || serverErrors?.last_name}
-            placeholder="last name"
-            value={form.last_name}
-          />
-          <AppTextInput
-            autoCorrect={false}
-            autoCapitalize="none"
-            label="Email Address"
-            handleChangeText={(e) => handleChangeText('email', e)}
-            placeholder="email"
-            value={form.email}
-            error={errors.email || serverErrors?.email}
-          />
-          <AppTextInput
-            label="Password"
-            handleChangeText={(e) => handleChangeText('password', e)}
-            value={form.password}
-            icon={
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <AppIcon
-                  type="Entypo"
-                  name={!showPassword ? 'eye' : 'eye-with-line'}
-                  size={20}
-                />
+      <ScrollView keyboardShouldPersistTaps="always">
+        <Image
+          source={require('../assets/images/logo.png')}
+          style={styles.logoImage}
+        />
+        <View>
+          <Text style={styles.title}>Welcome to RNContacts</Text>
+          <Text style={styles.subtitle}>Create a free account</Text>
+          {typeof serverErrors === 'string' && (
+            <AppMsgComponent message={serverErrors} danger />
+          )}
+          <View style={styles.form}>
+            <AppTextInput
+              autoCorrect={false}
+              autoCapitalize="none"
+              label="Username"
+              handleChangeText={(e) => handleChangeText('username', e)}
+              placeholder="Username"
+              value={form.username}
+              error={errors.username || serverErrors?.username}
+            />
+            <AppTextInput
+              label="First Name"
+              handleChangeText={(e) => handleChangeText('first_name', e)}
+              placeholder="first name"
+              value={form.first_name}
+              error={errors.first_name || serverErrors?.first_name}
+            />
+            <AppTextInput
+              label="Last Name"
+              handleChangeText={(e) => handleChangeText('last_name', e)}
+              error={errors.last_name || serverErrors?.last_name}
+              placeholder="last name"
+              value={form.last_name}
+            />
+            <AppTextInput
+              autoCorrect={false}
+              autoCapitalize="none"
+              label="Email Address"
+              handleChangeText={(e) => handleChangeText('email', e)}
+              placeholder="email"
+              value={form.email}
+              error={errors.email || serverErrors?.email}
+            />
+            <AppTextInput
+              label="Password"
+              handleChangeText={(e) => handleChangeText('password', e)}
+              value={form.password}
+              icon={
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}>
+                  <AppIcon
+                    type="Entypo"
+                    name={!showPassword ? 'eye' : 'eye-with-line'}
+                    size={20}
+                  />
+                </TouchableOpacity>
+              }
+              secureTextEntry={!showPassword}
+              iconPosition="Right"
+              placeholder="Password"
+              error={errors.password || serverErrors?.password}
+            />
+            <AppButton
+              title="Submit"
+              primary
+              onPress={submit}
+              loading={isLoading}
+              disabled={disableBtn || isLoading}
+            />
+            <View style={styles.registerSection}>
+              <Text style={styles.registerText}>Already have an account?</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(routes.LOGIN)}>
+                <Text style={styles.registerButton}>Login</Text>
               </TouchableOpacity>
-            }
-            secureTextEntry={!showPassword}
-            iconPosition="Right"
-            placeholder="Password"
-            error={errors.password || serverErrors?.password}
-          />
-          <AppButton
-            title="Submit"
-            primary
-            onPress={submit}
-            loading={isLoading}
-            disabled={disableBtn || isLoading}
-          />
-          <View style={styles.registerSection}>
-            <Text style={styles.registerText}>Already have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate(routes.LOGIN)}>
-              <Text style={styles.registerButton}>Login</Text>
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </AppContainer>
   );
 };

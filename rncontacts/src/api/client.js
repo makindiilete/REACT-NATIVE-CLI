@@ -23,18 +23,20 @@ apiClient.addAsyncRequestTransform(async (request) => {
 
 // response interceptor to logout if we get 403 error (Invalid token or token not present)
 apiClient.addAsyncResponseTransform(async (response) => {
-  if (response.problem === 'TIMEOUT_ERROR') {
-    Alert.alert(
-      'Oops',
-      'Request taking too long, check your internet connection',
-    );
-  }
-  if (response.status === 403) {
-    navigate(routes.LOGOUT, {tokenExpired: true});
-    await removeFromStorage('user');
-    await removeFromStorage('token');
-  } else {
-    console.log('Proceed omo olope');
+  if (!response.ok) {
+    if (response.problem === 'TIMEOUT_ERROR') {
+      Alert.alert(
+        'Oops',
+        'Request taking too long, check your internet connection',
+      );
+    }
+    if (response.status === 403) {
+      navigate(routes.LOGOUT, {tokenExpired: true});
+      await removeFromStorage('user');
+      await removeFromStorage('token');
+    } else {
+      // Log to sentry....
+    }
   }
 });
 

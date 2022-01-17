@@ -5,6 +5,7 @@ import {
   Image,
   Switch,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -211,7 +212,7 @@ export const CreateContact = ({route}) => {
 
   return (
     <AppContainer>
-      <View>
+      <ScrollView keyboardShouldPersistTaps="always">
         <Image
           source={{uri: form.contact_picture || DEFAULT_IMAGE_URI}}
           style={styles.imageView}
@@ -269,7 +270,7 @@ export const CreateContact = ({route}) => {
           disabled={isLoading}
           onPress={submit}
         />
-      </View>
+      </ScrollView>
       {/*We forward our ref as props to d ImagePicker component*/}
       <AppImagePicker ref={sheetRef} onFileSelected={onFileSelected} />
     </AppContainer>
